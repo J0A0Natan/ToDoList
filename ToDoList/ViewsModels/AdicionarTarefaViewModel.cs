@@ -1,16 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Windows;
 using System.Windows.Input;
-using System.Windows.Navigation;
 using ToDoList.Models;
 using ToDoList.Services;
-using ToDoList.Views;
 
 namespace ToDoList.ViewsModels;
 
@@ -74,8 +66,11 @@ internal class AdicionarTarefaViewModel : INotifyPropertyChanged
         get => _dataVencimento;
         set
         {
-            _dataVencimento = value;
-            OnPropertyChanged();
+            if (_dataVencimento != value)
+            {
+                _dataVencimento = value;
+                OnPropertyChanged();
+            }
         }
     }
 
@@ -120,6 +115,7 @@ internal class AdicionarTarefaViewModel : INotifyPropertyChanged
 
         db.SaveChanges();
 
+        // Notifica a view que a tarefa foi adicionada para que ela possa voltar para a página anterior
         AdicionarTareConcluido?.Invoke(this, EventArgs.Empty);
     }
 
