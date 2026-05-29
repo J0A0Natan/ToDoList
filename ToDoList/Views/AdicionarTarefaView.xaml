@@ -1,0 +1,38 @@
+﻿<Page x:Class="ToDoList.Views.AdicionarTarefaView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ToDoList.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="AdicionarTarefaView">
+
+    <Grid Margin="16">
+        <StackPanel Orientation="Vertical" Width="400">
+            <Label Content="Titulo"/>
+            <TextBox Text="{Binding Titulo}"/>
+
+            <Label Content="Descrição"/>
+            <TextBox Text="{Binding Descricao}"/>
+
+            <Label Content="Data de vencimento"/>
+            <DatePicker SelectedDate="{Binding DataVencimento}"/>
+
+            <Label Content="Prioridade"/>
+            <ComboBox ItemsSource="{Binding OpcoesPrioridade}" SelectedItem="{Binding PrioridadeSelecionada}"/>
+
+            <Label Content="Categoria"/>
+            <ComboBox ItemsSource="{Binding OpcoesCategoria}" SelectedItem="{Binding CategoriaSelecionada}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Nome}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <Button Content="Adicionar" Width="70" Margin="0 15" Command="{Binding AdicionarTarefaCmd}"/>
+            <Button Content="Voltar" Width="70" Click="BtnVoltar_Click"/>
+        </StackPanel>
+    </Grid>
+</Page>

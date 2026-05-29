@@ -1,0 +1,130 @@
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Navigation;
+using ToDoList.Models;
+using ToDoList.Services;
+using ToDoList.Views;
+
+namespace ToDoList.ViewsModels;
+
+internal class AdicionarTarefaViewModel : INotifyPropertyChanged
+{
+    public event PropertyChangedEventHandler? PropertyChanged;
+    public event EventHandler AdicionarTareConcluido;
+
+    public IEnumerable<Prioridade> OpcoesPrioridade { get; set; }
+    public List<Categoria> OpcoesCategoria { get; set; } = new();
+
+    public ICommand AdicionarTarefaCmd { get; }
+
+    public AdicionarTarefaViewModel()
+    {
+        AdicionarTarefaCmd = new RelayCommand(AdicionarTarefa);
+
+        OpcoesPrioridade = Enum.GetValues(typeof(Prioridade)).Cast<Prioridade>();
+        PrioridadeSelecionada = Prioridade.Media;
+
+        DataVencimento = DateTime.UtcNow;
+
+        OpcoesCategoria.Add(new Categoria() { Id = 1, Nome = "Padrão", Cor = "#FF0000" });
+        OpcoesCategoria.Add(new Categoria() { Id = 2, Nome = "Trabalho", Cor = "#00FF00" });
+        OpcoesCategoria.Add(new Categoria() { Id = 3, Nome = "Estudo", Cor = "#0000FF" });
+
+        CategoriaSelecionada = OpcoesCategoria.First();
+    }
+
+    private string _titulo;
+    public string Titulo
+    {
+        get => _titulo;
+        set
+        {
+            if (_titulo != value)
+            {
+                _titulo = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    private string _descricao;
+    public string Descricao
+    {
+        get => _descricao;
+        set
+        {
+            if (_descricao != value)
+            {
+                _descricao = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    private DateTime _dataVencimento;
+    public DateTime DataVencimento
+    {
+        get => _dataVencimento;
+        set
+        {
+            _dataVencimento = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private Prioridade _prioridadeSelecionada;
+    public Prioridade PrioridadeSelecionada
+    {
+        get => _prioridadeSelecionada;
+        set
+        {
+            _prioridadeSelecionada = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private Categoria _categoriaSelecionada;
+    public Categoria CategoriaSelecionada
+    {
+        get => _categoriaSelecionada;
+        set
+        {
+            if (_categoriaSelecionada != value)
+            {
+                _categoriaSelecionada = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public void AdicionarTarefa()
+    {
+        var tarefa = new Tarefa() 
+        { 
+            Titulo = Titulo,
+            Descricao = Descricao,
+            DataVencimento = DataVencimento,
+            Prioridade = PrioridadeSelecionada,
+            CategoriaId = CategoriaSelecionada.Id
+        };
+
+        using var db = new AppDbContext();
+        db.Tarefas.Add(tarefa);
+
+        db.SaveChanges();
+
+        AdicionarTareConcluido?.Invoke(this, EventArgs.Empty);
+    }
+
+    protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+}
