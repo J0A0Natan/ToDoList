@@ -43,6 +43,11 @@
                             </TextBlock>
 
                             <TextBlock>
+                                <Run Text="Data de vencimento: "/>
+                                <Run Text="{Binding DataVencimento}"/>
+                            </TextBlock>
+
+                            <TextBlock>
                                 <Run Text="Prioridade: "/>
                                 <Run Text="{Binding Prioridade}"/>
                             </TextBlock>
