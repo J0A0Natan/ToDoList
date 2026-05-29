@@ -20,10 +20,10 @@ public partial class MainPage : Page
 
     private void MainPage_Loaded(object sender, RoutedEventArgs e)
     {
-        _vm.ObterTarefas();
+        _vm.ObterTarefasCategorias();
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e)
+    private void BtnAdicionar_Click(object sender, RoutedEventArgs e)
     {
         AdicionarTarefaView view = new();
         this.NavigationService.Navigate(view);

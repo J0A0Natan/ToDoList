@@ -7,22 +7,30 @@ namespace ToDoList.ViewsModels;
 class MainPageViewModel
 {
     public ObservableCollection<Tarefa> Tarefas { get; set; } = new();
+    public ObservableCollection<Categoria> Categorias { get; set; } = new();
 
 
     public MainPageViewModel()
     {
-        ObterTarefas();
+        ObterTarefasCategorias();
     }
 
-    public void ObterTarefas()
+    public void ObterTarefasCategorias()
     {
         using var db = new AppDbContext();
         var tarefas = db.Tarefas;
+        var categorias = db.Categorias;
 
         Tarefas.Clear();
         foreach (var tarefa in tarefas)
         {
             Tarefas.Add(tarefa);
+        }
+
+        Categorias.Clear();
+        foreach (var categoria in categorias)
+        {
+            Categorias.Add(categoria);
         }
     }
 }

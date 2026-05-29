@@ -25,11 +25,21 @@ internal class AdicionarTarefaViewModel : INotifyPropertyChanged
 
         DataVencimento = DateTime.UtcNow;
 
-        OpcoesCategoria.Add(new Categoria() { Id = 1, Nome = "Padrão", Cor = "#FF0000" });
-        OpcoesCategoria.Add(new Categoria() { Id = 2, Nome = "Trabalho", Cor = "#00FF00" });
-        OpcoesCategoria.Add(new Categoria() { Id = 3, Nome = "Estudo", Cor = "#0000FF" });
+        ObterCategorias();
 
         CategoriaSelecionada = OpcoesCategoria.First();
+    }
+
+    private void ObterCategorias()
+    {
+        using var db = new AppDbContext();
+        var categorias = db.Categorias;
+
+        OpcoesCategoria.Clear();
+        foreach (var cat in categorias)
+        {
+            OpcoesCategoria.Add(cat);
+        }
     }
 
     private string _titulo;
