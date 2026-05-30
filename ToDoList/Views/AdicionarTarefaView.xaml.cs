@@ -17,10 +17,10 @@ public partial class AdicionarTarefaView : Page
         _vm = new();
         DataContext = _vm;
 
-        Loaded += AdicionarTarefaView_Loaded;
-
         // Quando a tarefa for adicionada com sucesso, volta para a página anterior
         _vm.AdicionarTareConcluido += (s, e) => NavigationService.GoBack();
+
+        Loaded += AdicionarTarefaView_Loaded;
     }
 
     private void AdicionarTarefaView_Loaded(object sender, RoutedEventArgs e)
