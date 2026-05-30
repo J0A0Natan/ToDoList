@@ -30,7 +30,7 @@ internal class AdicionarTarefaViewModel : INotifyPropertyChanged
         CategoriaSelecionada = OpcoesCategoria.First();
     }
 
-    private void ObterCategorias()
+    public void ObterCategorias()
     {
         using var db = new AppDbContext();
         var categorias = db.Categorias;
