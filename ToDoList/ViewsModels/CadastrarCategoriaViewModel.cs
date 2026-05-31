@@ -21,17 +21,20 @@ class CadastrarCategoriaViewModel : INotifyPropertyChanged
 
     public void CadastrarCategoria()
     {
-        Categoria categoria = new()
+        if (Nome != null && Cor != null)
         {
-            Nome = Nome,
-            Cor = Cor
-        };
+            Categoria categoria = new()
+            {
+                Nome = Nome,
+                Cor = Cor
+            };
 
-        using var db = new AppDbContext();
-        db.Categorias.Add(categoria);
-        db.SaveChanges();
+            using var db = new AppDbContext();
+            db.Categorias.Add(categoria);
+            db.SaveChanges();
 
-        CadastroCategoriaConcluido?.Invoke(this, EventArgs.Empty);
+            CadastroCategoriaConcluido?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     private string _nome;

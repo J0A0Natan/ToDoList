@@ -111,22 +111,25 @@ internal class AdicionarTarefaViewModel : INotifyPropertyChanged
 
     public void AdicionarTarefa()
     {
-        var tarefa = new Tarefa() 
-        { 
-            Titulo = Titulo,
-            Descricao = Descricao,
-            DataVencimento = DataVencimento,
-            Prioridade = PrioridadeSelecionada,
-            CategoriaId = CategoriaSelecionada.Id
-        };
+        if (Titulo != null && Descricao != null)
+        {
+            var tarefa = new Tarefa()
+            {
+                Titulo = Titulo,
+                Descricao = Descricao,
+                DataVencimento = DataVencimento,
+                Prioridade = PrioridadeSelecionada,
+                CategoriaId = CategoriaSelecionada.Id
+            };
 
-        using var db = new AppDbContext();
-        db.Tarefas.Add(tarefa);
+            using var db = new AppDbContext();
+            db.Tarefas.Add(tarefa);
 
-        db.SaveChanges();
+            db.SaveChanges();
 
-        // Notifica a view que a tarefa foi adicionada para que ela possa voltar para a página anterior
-        AdicionarTareConcluido?.Invoke(this, EventArgs.Empty);
+            // Notifica a view que a tarefa foi adicionada para que ela possa voltar para a página anterior
+            AdicionarTareConcluido?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
