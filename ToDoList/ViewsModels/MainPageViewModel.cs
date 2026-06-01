@@ -16,12 +16,14 @@ class MainPageViewModel : INotifyPropertyChanged
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public ICommand CmdExcluirTarefa { get; }
+    public ICommand CmdAlterarConcluida { get; }
 
     public MainPageViewModel()
     {
         ObterTarefasCategorias();
 
         CmdExcluirTarefa = new RelayCommand(ExcluirTarefa);
+        CmdAlterarConcluida = new RelayCommand(AlterarConcluida);
     }
 
     public void ObterTarefasCategorias()
@@ -59,6 +61,16 @@ class MainPageViewModel : INotifyPropertyChanged
         }
     }
 
+    public void AlterarConcluida()
+    {
+        if (TarefaSelecionada != null)
+        {
+            using var db = new AppDbContext();
+            db.Tarefas.Update(TarefaSelecionada);
+            db.SaveChanges();
+        }
+    }
+
     private Tarefa _tarefaSelecionada;
     public Tarefa TarefaSelecionada
     {
@@ -68,6 +80,20 @@ class MainPageViewModel : INotifyPropertyChanged
             if (_tarefaSelecionada != value)
             {
                 _tarefaSelecionada = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    private bool _concluida;
+    public bool Concluida
+    {
+        get => _concluida;
+        set
+        {
+            if (_concluida != value)
+            {
+                _concluida = value;
                 OnPropertyChanged();
             }
         }

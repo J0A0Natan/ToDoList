@@ -25,7 +25,11 @@
                 <DataTemplate>
                     <Border BorderBrush="Gray" BorderThickness="0,0,0,1" Padding="10">
                         <StackPanel >
-                            <CheckBox IsChecked="{Binding Concluida}" Content="Concluida"/>
+                            <CheckBox IsChecked="{Binding Concluida}"
+                                      IsEnabled="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
+                                      Command="{Binding DataContext.CmdAlterarConcluida, RelativeSource={RelativeSource AncestorType=Page}}"
+                                      Content="Concluida"
+                            />
 
                             <TextBlock>
                                <Run Text="Titulo: "/>
