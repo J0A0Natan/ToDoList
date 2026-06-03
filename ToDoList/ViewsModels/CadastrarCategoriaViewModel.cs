@@ -14,9 +14,12 @@ class CadastrarCategoriaViewModel : INotifyPropertyChanged
 
     public ICommand CmdCadastrar { get; }
 
+    private ITarefaService _tarefaService;
+
     public CadastrarCategoriaViewModel()
     {
         CmdCadastrar = new RelayCommand(CadastrarCategoria);
+        _tarefaService = new TarefaService(new AppDbContext());
     }
 
     public void CadastrarCategoria()
@@ -29,9 +32,7 @@ class CadastrarCategoriaViewModel : INotifyPropertyChanged
                 Cor = Cor
             };
 
-            using var db = new AppDbContext();
-            db.Categorias.Add(categoria);
-            db.SaveChanges();
+            _tarefaService.AdicionarCategoria(categoria);
 
             CadastroCategoriaConcluido?.Invoke(this, EventArgs.Empty);
         }

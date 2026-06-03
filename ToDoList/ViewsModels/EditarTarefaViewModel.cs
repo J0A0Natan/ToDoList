@@ -20,21 +20,21 @@ internal class EditarTarefaViewModel : INotifyPropertyChanged
 
     private Tarefa _tarefa;
     
-    public EditarTarefaViewModel(Tarefa tarefa, AppDbContext appDbContext)
+    public EditarTarefaViewModel(Tarefa tarefa)
     {
         OpcoesPrioridade = Enum.GetValues(typeof(Prioridade)).Cast<Prioridade>();
 
-        _tarefaService = new TarefaService(appDbContext);
-
-        ObterCategorias();
+        _tarefaService = new TarefaService(new AppDbContext());
 
         _tarefa = tarefa;
+
+        ObterCategorias();
 
         Titulo = _tarefa.Titulo;
         Descricao = _tarefa.Descricao ?? string.Empty;
         DataVencimento = _tarefa.DataVencimento ?? DateTime.Now;
         PrioridadeSelecionada = _tarefa.Prioridade;
-        CategoriaSelecionada = _tarefa.Categoria;
+        CategoriaSelecionada = OpcoesCategoria.First(c => c.Id == _tarefa.CategoriaId);
 
         SalvarTarefaCmd = new RelayCommand(SalvarTarefa);
     }

@@ -1,6 +1,5 @@
 ﻿using System.Windows.Controls;
 using ToDoList.Models;
-using ToDoList.Services;
 using ToDoList.ViewsModels;
 
 namespace ToDoList.Views;
@@ -10,10 +9,10 @@ namespace ToDoList.Views;
 /// </summary>
 public partial class EditarTarefaView : Page
 {
-    public EditarTarefaView(Tarefa tarefa, AppDbContext appDbContext)
+    public EditarTarefaView(Tarefa tarefa)
     {
         InitializeComponent();
-        EditarTarefaViewModel vm = new(tarefa, appDbContext);
+        EditarTarefaViewModel vm = new(tarefa);
         DataContext = vm;
 
         vm.SalvarTarefaConcluido += (s, e) => this.NavigationService.GoBack();
@@ -26,6 +25,7 @@ public partial class EditarTarefaView : Page
 
     private void BtnCadastrarCategoria_Click(object sender, System.Windows.RoutedEventArgs e)
     {
-
+        CadastrarCategoriaView view = new();
+        this.NavigationService.Navigate(view);
     }
 }

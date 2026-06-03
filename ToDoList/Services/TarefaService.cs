@@ -3,7 +3,7 @@ using ToDoList.Models;
 
 namespace ToDoList.Services;
 
-internal class TarefaService : ITarefaService
+internal class TarefaService : ITarefaService, IDisposable
 {
     private AppDbContext db;
 
@@ -12,9 +12,20 @@ internal class TarefaService : ITarefaService
         db = dbContext;
     }
 
+    public void Dispose()
+    {
+        db.Dispose();
+    }
+
     public void AdicionarTarefa(Tarefa tarefa)
     {
         db.Tarefas.Add(tarefa);
+        db.SaveChanges();
+    }
+
+    public void AdicionarCategoria(Categoria categoria)
+    {
+        db.Categorias.Add(categoria);
         db.SaveChanges();
     }
 
@@ -32,7 +43,7 @@ internal class TarefaService : ITarefaService
 
     public ObservableCollection<Tarefa> ObterTarefas()
     {
-        var tarefas = db.Tarefas;
+        var tarefas = db.Tarefas.ToList();
 
         //[.. tarefas] -> operador de espalhamento, ele pega cada item da coleção e adiciona na nova coleção
         ObservableCollection<Tarefa> tarefasRetorno = [.. tarefas];
@@ -42,7 +53,7 @@ internal class TarefaService : ITarefaService
 
     public ObservableCollection<Categoria> ObterCategorias()
     {
-        var categorias = db.Categorias;
+        var categorias = db.Categorias.ToList();
 
         //[.. tarefas] -> operador de espalhamento, ele pega cada item da coleção e adiciona na nova coleção
         ObservableCollection<Categoria> categoriasRetorno = [.. categorias];

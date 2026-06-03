@@ -30,7 +30,7 @@ public partial class MainPage : Page
     {
         if (_vm.TarefaSelecionada != null)
         {
-            EditarTarefaView view = new(_vm.TarefaSelecionada, _appDbContext);
+            EditarTarefaView view = new(_vm.TarefaSelecionada);
             this.NavigationService.Navigate(view);
         }
     }
@@ -42,7 +42,7 @@ public partial class MainPage : Page
 
     private void BtnAdicionar_Click(object sender, RoutedEventArgs e)
     {
-        AdicionarTarefaView view = new(_appDbContext);
+        AdicionarTarefaView view = new();
         this.NavigationService.Navigate(view);
     }
 }

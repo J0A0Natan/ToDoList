@@ -12,10 +12,10 @@ namespace ToDoList.Views;
 public partial class AdicionarTarefaView : Page
 {
     private AdicionarTarefaViewModel _vm;
-    public AdicionarTarefaView(AppDbContext appDbContext)
+    public AdicionarTarefaView()
     {
         InitializeComponent();
-        _vm = new(appDbContext);
+        _vm = new();
         DataContext = _vm;
 
         // Quando a tarefa for adicionada com sucesso, volta para a página anterior

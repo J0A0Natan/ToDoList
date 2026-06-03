@@ -7,6 +7,7 @@ internal interface ITarefaService
 {
     public ObservableCollection<Tarefa> ObterTarefas();
     public ObservableCollection<Categoria> ObterCategorias();
+    public void AdicionarCategoria(Categoria categoria);
     public void AdicionarTarefa(Tarefa tarefa);
     public void AtualizarTarefa(Tarefa tarefa);
     public void ExcluirTarefa(Tarefa tarefa);

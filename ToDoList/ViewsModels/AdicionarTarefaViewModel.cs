@@ -18,9 +18,9 @@ internal class AdicionarTarefaViewModel : INotifyPropertyChanged
 
     private ITarefaService _tarefaService;
 
-    public AdicionarTarefaViewModel(AppDbContext appDbContext)
+    public AdicionarTarefaViewModel()
     {
-        _tarefaService = new TarefaService(appDbContext);
+        _tarefaService = new TarefaService(new AppDbContext());
 
         AdicionarTarefaCmd = new RelayCommand(AdicionarTarefa);
 
