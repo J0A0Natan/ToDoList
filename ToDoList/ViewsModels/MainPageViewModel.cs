@@ -10,17 +10,19 @@ namespace ToDoList.ViewsModels;
 
 class MainPageViewModel : INotifyPropertyChanged
 {
+    public event PropertyChangedEventHandler? PropertyChanged;
+
     public ObservableCollection<Tarefa> Tarefas { get; set; } = new();
     public ObservableCollection<Categoria> Categorias { get; set; } = new();
-
-    public event PropertyChangedEventHandler? PropertyChanged;
 
     public ICommand CmdExcluirTarefa { get; }
     public ICommand CmdAlterarConcluida { get; }
 
-    public MainPageViewModel()
+    private ITarefaService _tarefaService;
+
+    public MainPageViewModel(AppDbContext appDbContext)
     {
-        ObterTarefasCategorias();
+        _tarefaService = new TarefaService(appDbContext);
 
         CmdExcluirTarefa = new RelayCommand(ExcluirTarefa);
         CmdAlterarConcluida = new RelayCommand(AlterarConcluida);
@@ -28,46 +30,34 @@ class MainPageViewModel : INotifyPropertyChanged
 
     public void ObterTarefasCategorias()
     {
-        using var db = new AppDbContext();
-        var tarefas = db.Tarefas;
-        var categorias = db.Categorias;
-
         Tarefas.Clear();
-        foreach (var tarefa in tarefas)
-        {
-            Tarefas.Add(tarefa);
-        }
+        var tarefas = _tarefaService.ObterTarefas();
+        foreach (var t in tarefas) Tarefas.Add(t);
 
         Categorias.Clear();
-        foreach (var categoria in categorias)
-        {
-            Categorias.Add(categoria);
-        }
+        var categorias = _tarefaService.ObterCategorias();
+        foreach (var c in categorias) Categorias.Add(c);
     }
 
-    public void ExcluirTarefa()
+    private void ExcluirTarefa()
     {
         if (TarefaSelecionada != null)
         {
             var resultado = MessageBox.Show("Deseja realmente excluir esta tarefa?", "Atenção", MessageBoxButton.YesNo);
             if (resultado == MessageBoxResult.Yes)
             {
-                using var db = new AppDbContext();
-                db.Tarefas.Remove(TarefaSelecionada);
-                db.SaveChanges();
+                _tarefaService.ExcluirTarefa(TarefaSelecionada);
                 MessageBox.Show($"{TarefaSelecionada.Titulo} excluida");
                 ObterTarefasCategorias();
             }
         }
     }
 
-    public void AlterarConcluida()
+    private void AlterarConcluida()
     {
         if (TarefaSelecionada != null)
         {
-            using var db = new AppDbContext();
-            db.Tarefas.Update(TarefaSelecionada);
-            db.SaveChanges();
+            _tarefaService.AtualizarTarefa(TarefaSelecionada);
         }
     }
 

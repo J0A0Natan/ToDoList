@@ -16,8 +16,12 @@ internal class AdicionarTarefaViewModel : INotifyPropertyChanged
 
     public ICommand AdicionarTarefaCmd { get; }
 
+    private ITarefaService _tarefaService;
+
     public AdicionarTarefaViewModel()
     {
+        _tarefaService = new TarefaService(new AppDbContext());
+
         AdicionarTarefaCmd = new RelayCommand(AdicionarTarefa);
 
         OpcoesPrioridade = Enum.GetValues(typeof(Prioridade)).Cast<Prioridade>();
@@ -32,13 +36,28 @@ internal class AdicionarTarefaViewModel : INotifyPropertyChanged
 
     public void ObterCategorias()
     {
-        using var db = new AppDbContext();
-        var categorias = db.Categorias;
-
+        var categorias = _tarefaService.ObterCategorias();
         OpcoesCategoria.Clear();
-        foreach (var cat in categorias)
+        foreach (var c in categorias) OpcoesCategoria.Add(c);
+    }
+
+    public void AdicionarTarefa()
+    {
+        if (Titulo != null && Descricao != null)
         {
-            OpcoesCategoria.Add(cat);
+            var tarefa = new Tarefa()
+            {
+                Titulo = Titulo,
+                Descricao = Descricao,
+                DataVencimento = DataVencimento,
+                Prioridade = PrioridadeSelecionada,
+                CategoriaId = CategoriaSelecionada.Id
+            };
+
+            _tarefaService.AdicionarTarefa(tarefa);
+
+            // Notifica a view que a tarefa foi adicionada para que ela possa voltar para a página anterior
+            AdicionarTareConcluido?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -106,29 +125,6 @@ internal class AdicionarTarefaViewModel : INotifyPropertyChanged
                 _categoriaSelecionada = value;
                 OnPropertyChanged();
             }
-        }
-    }
-
-    public void AdicionarTarefa()
-    {
-        if (Titulo != null && Descricao != null)
-        {
-            var tarefa = new Tarefa()
-            {
-                Titulo = Titulo,
-                Descricao = Descricao,
-                DataVencimento = DataVencimento,
-                Prioridade = PrioridadeSelecionada,
-                CategoriaId = CategoriaSelecionada.Id
-            };
-
-            using var db = new AppDbContext();
-            db.Tarefas.Add(tarefa);
-
-            db.SaveChanges();
-
-            // Notifica a view que a tarefa foi adicionada para que ela possa voltar para a página anterior
-            AdicionarTareConcluido?.Invoke(this, EventArgs.Empty);
         }
     }
 

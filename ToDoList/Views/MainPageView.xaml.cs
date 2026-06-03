@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using ToDoList.Services;
 using ToDoList.ViewsModels;
 
 namespace ToDoList.Views;
@@ -10,12 +11,18 @@ namespace ToDoList.Views;
 public partial class MainPage : Page
 {
     private MainPageViewModel _vm;
+    private AppDbContext _appDbContext;
 
     public MainPage()
     {
         InitializeComponent();
-        _vm = new();
+
+        _appDbContext = new();
+
+        _vm = new(_appDbContext);
+
         DataContext = _vm;
+
         Loaded += MainPage_Loaded;
     }
 
@@ -23,7 +30,7 @@ public partial class MainPage : Page
     {
         if (_vm.TarefaSelecionada != null)
         {
-            EditarTarefaView view = new(_vm.TarefaSelecionada);
+            EditarTarefaView view = new(_vm.TarefaSelecionada, _appDbContext);
             this.NavigationService.Navigate(view);
         }
     }

@@ -3,7 +3,7 @@ using ToDoList.Models;
 
 namespace ToDoList.Services;
 
-class AppDbContext : DbContext
+public class AppDbContext : DbContext
 {
     public DbSet<Tarefa> Tarefas { get; set; }
     public DbSet<Categoria> Categorias { get; set; }

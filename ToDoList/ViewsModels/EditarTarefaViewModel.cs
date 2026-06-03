@@ -9,18 +9,23 @@ namespace ToDoList.ViewsModels;
 internal class EditarTarefaViewModel : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
+    public event EventHandler SalvarTarefaConcluido;
+
     public IEnumerable<Prioridade> OpcoesPrioridade { get; set; } // { get; set; } -> permite que seja setado o valor de fora da classe
     public List<Categoria> OpcoesCategoria { get; set; } = new();
 
     public ICommand SalvarTarefaCmd { get; }
 
-    public event EventHandler SalvarTarefaConcluido;
+    private ITarefaService _tarefaService;
 
     private Tarefa _tarefa;
-
-    public EditarTarefaViewModel(Tarefa tarefa)
+    
+    public EditarTarefaViewModel(Tarefa tarefa, AppDbContext appDbContext)
     {
         OpcoesPrioridade = Enum.GetValues(typeof(Prioridade)).Cast<Prioridade>();
+
+        _tarefaService = new TarefaService(appDbContext);
+
         ObterCategorias();
 
         _tarefa = tarefa;
@@ -36,17 +41,12 @@ internal class EditarTarefaViewModel : INotifyPropertyChanged
 
     public void ObterCategorias()
     {
-        using var db = new AppDbContext();
-        var categorias = db.Categorias;
-
+        var categorias = _tarefaService.ObterCategorias();
         OpcoesCategoria.Clear();
-        foreach (var cat in categorias)
-        {
-            OpcoesCategoria.Add(cat);
-        }
+        foreach (var c in categorias) OpcoesCategoria.Add(c);
     }
 
-    private void SalvarTarefa()
+    public void SalvarTarefa()
     {
         _tarefa.Titulo = Titulo;
         _tarefa.Descricao = Descricao;
@@ -54,9 +54,7 @@ internal class EditarTarefaViewModel : INotifyPropertyChanged
         _tarefa.Prioridade = PrioridadeSelecionada;
         _tarefa.Categoria = CategoriaSelecionada;
 
-        using var db = new AppDbContext();
-        db.Tarefas.Update(_tarefa);
-        db.SaveChanges();
+        _tarefaService.AtualizarTarefa(_tarefa);
 
         SalvarTarefaConcluido?.Invoke(this, EventArgs.Empty);
     }
