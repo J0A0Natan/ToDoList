@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using ToDoList.Services;
 using ToDoList.ViewsModels;
 
 namespace ToDoList.Views;
@@ -11,10 +12,10 @@ namespace ToDoList.Views;
 public partial class AdicionarTarefaView : Page
 {
     private AdicionarTarefaViewModel _vm;
-    public AdicionarTarefaView()
+    public AdicionarTarefaView(AppDbContext appDbContext)
     {
         InitializeComponent();
-        _vm = new();
+        _vm = new(appDbContext);
         DataContext = _vm;
 
         // Quando a tarefa for adicionada com sucesso, volta para a página anterior

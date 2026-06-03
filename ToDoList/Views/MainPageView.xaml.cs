@@ -42,7 +42,7 @@ public partial class MainPage : Page
 
     private void BtnAdicionar_Click(object sender, RoutedEventArgs e)
     {
-        AdicionarTarefaView view = new();
+        AdicionarTarefaView view = new(_appDbContext);
         this.NavigationService.Navigate(view);
     }
 }
