@@ -14,6 +14,8 @@ internal class EditarTarefaViewModel : INotifyPropertyChanged
 
     public ICommand SalvarTarefaCmd { get; }
 
+    public event EventHandler SalvarTarefaConcluido;
+
     private Tarefa _tarefa;
 
     public EditarTarefaViewModel(Tarefa tarefa)
@@ -55,6 +57,8 @@ internal class EditarTarefaViewModel : INotifyPropertyChanged
         using var db = new AppDbContext();
         db.Tarefas.Update(_tarefa);
         db.SaveChanges();
+
+        SalvarTarefaConcluido?.Invoke(this, EventArgs.Empty);
     }
 
     private string _titulo;

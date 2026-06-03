@@ -14,6 +14,8 @@ public partial class EditarTarefaView : Page
         InitializeComponent();
         EditarTarefaViewModel vm = new(tarefa);
         DataContext = vm;
+
+        vm.SalvarTarefaConcluido += (s, e) => this.NavigationService.GoBack();
     }
 
     private void BtnVoltar_Click(object sender, System.Windows.RoutedEventArgs e)
