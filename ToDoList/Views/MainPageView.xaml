@@ -16,7 +16,7 @@
 
         <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
             <Button Content="Adicionar" Padding="3" Margin="0 0 5 0" Click="BtnAdicionar_Click"/>
-            <Button Content="Editar" Padding="3" Margin="5 0"/>
+            <Button Content="Editar" Padding="3" Margin="5 0" Click="BtnEditar_Click"/>
             <Button Content="Excluir" Padding="3" Margin="5 0" Command="{Binding CmdExcluirTarefa}"/>
         </StackPanel>
 

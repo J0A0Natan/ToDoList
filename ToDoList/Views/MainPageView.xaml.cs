@@ -10,12 +10,22 @@ namespace ToDoList.Views;
 public partial class MainPage : Page
 {
     private MainPageViewModel _vm;
+
     public MainPage()
     {
         InitializeComponent();
         _vm = new();
         DataContext = _vm;
         Loaded += MainPage_Loaded;
+    }
+
+    private void BtnEditar_Click(object sender, RoutedEventArgs e)
+    {
+        if (_vm.TarefaSelecionada != null)
+        {
+            EditarTarefaView view = new(_vm.TarefaSelecionada);
+            this.NavigationService.Navigate(view);
+        }
     }
 
     private void MainPage_Loaded(object sender, RoutedEventArgs e)

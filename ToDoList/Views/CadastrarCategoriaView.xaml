@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ToDoList.Views"
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="CadastrarCategoriaView">
@@ -14,7 +15,11 @@
             <TextBox Text="{Binding Nome}"/>
 
             <Label Content="Cor"/>
-            <TextBox Text="{Binding Cor}"/>
+            <!--<TextBox Text="{Binding Cor}"/>-->
+
+            <mah:ColorPicker
+                SelectedColor="{Binding Cor}"
+                SelectedColorTemplate="{DynamicResource MahApps.Templates.ColorPickerContent.ColorAndName}"/>
 
             <Button Content="Cadastrar" MaxWidth="80" Margin="0 20 0 0" Command="{Binding CmdCadastrar}"/>
             <Button Content="Voltar" MaxWidth="80" Margin="0 20 0 0" Click="BtnVoltar_Click"/>
