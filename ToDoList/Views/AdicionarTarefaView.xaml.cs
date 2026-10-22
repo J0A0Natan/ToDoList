@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using ToDoList.Services;
 using ToDoList.ViewsModels;
 
 namespace ToDoList.Views;

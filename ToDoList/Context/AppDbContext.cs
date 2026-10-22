@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ToDoList.Models;
 
-namespace ToDoList.Services;
+namespace ToDoList.Context;
 
 public class AppDbContext : DbContext
 {

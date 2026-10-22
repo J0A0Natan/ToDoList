@@ -1,11 +1,12 @@
 ﻿using System.Collections.ObjectModel;
+using ToDoList.Context;
 using ToDoList.Models;
 
 namespace ToDoList.Services;
 
 internal class TarefaService : ITarefaService, IDisposable
 {
-    private AppDbContext db;
+    private readonly AppDbContext db;
 
     public TarefaService(AppDbContext dbContext)
     {
